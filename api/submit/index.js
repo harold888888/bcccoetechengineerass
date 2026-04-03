@@ -1,10 +1,17 @@
-const { ensureParticipant, getQuarter, getTableClient, getUserFromClientPrincipal } = require("../shared/common");
+const { ensureParticipant, getQuarter, getTableClient, getUserFromClientPrincipal, normalizeEmail } = require("../shared/common");
 
 module.exports = async function (context, req) {
   try {
-    const user = getUserFromClientPrincipal(req);
-    if (!user) {
-      context.res = { status: 401, body: "Unauthorized" };
+    const principal = getUserFromClientPrincipal(req);
+    const workEmail = normalizeEmail((req.body || {}).workEmail);
+    const user = principal || {
+      userId: workEmail,
+      userDetails: workEmail,
+      roles: ["anonymous-demo"]
+    };
+
+    if (!user.userDetails) {
+      context.res = { status: 400, body: "Missing workEmail" };
       return;
     }
 
