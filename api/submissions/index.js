@@ -12,8 +12,9 @@ module.exports = async function (context, req) {
     const user = getUserFromClientPrincipal(req);
     const emailQuery = String(req.query.email || "").trim().toLowerCase();
     const tlEmail = normalizeEmail(req.query.tlEmail || "");
+    const adminView = String(req.query.all || "").toLowerCase() === "true";
     if (!user) {
-      if (!emailQuery) {
+      if (!emailQuery && !adminView) {
         context.res = { status: 200, headers: { "Content-Type": "application/json" }, body: { record: null } };
         return;
       }
@@ -21,7 +22,6 @@ module.exports = async function (context, req) {
 
     const client = getTableClient();
     const quarter = getQuarter();
-    const adminView = String(req.query.all || "").toLowerCase() === "true";
 
     if (adminView) {
       const adminIdentity = user ? user.userDetails : tlEmail;
