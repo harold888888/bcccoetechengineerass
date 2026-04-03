@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Engineering Capability Assessment</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="wrap">
+    <h1>Engineering Capability Assessment 2026Q2</h1>
+    <p class="sub">三维模型：产品了解 50% + 证书链 30% + 解决方案 20%</p>
+
+    <section class="card">
+      <h2>产品了解</h2>
+      <label>等级</label>
+      <select id="productLevel">
+        <option>L100</option><option>L200</option><option>L300</option>
+      </select>
+      <label>方向</label>
+      <select id="productDirection">
+        <option>Cloud</option><option>AI</option><option>Data</option><option>MW</option>
+      </select>
+      <label>证据</label>
+      <textarea id="productEvidence" placeholder="产品理解深度 + 项目场景 + best practice"></textarea>
+    </section>
+
+    <section class="card">
+      <h2>证书链</h2>
+      <label>等级</label>
+      <select id="certLevel">
+        <option>L100</option><option>L200</option><option>L300</option>
+      </select>
+      <label>方向</label>
+      <select id="certDirection">
+        <option>Cloud</option><option>AI</option><option>Data</option><option>MW</option>
+      </select>
+      <label>证书编号</label>
+      <input id="certIds" placeholder="例如 AZ-104; AI-102" />
+      <label>证据</label>
+      <textarea id="certEvidence" placeholder="证书如何应用到项目"></textarea>
+    </section>
+
+    <section class="card">
+      <h2>解决方案</h2>
+      <label>等级</label>
+      <select id="solutionLevel">
+        <option>L100</option><option>L200</option><option>L300</option>
+      </select>
+      <label>方向</label>
+      <select id="solutionDirection">
+        <option>Cloud</option><option>AI</option><option>Data</option><option>MW</option>
+      </select>
+      <label>证据</label>
+      <textarea id="solutionEvidence" placeholder="至少一个方案设计或落地案例"></textarea>
+    </section>
+
+    <section class="card result">
+      <h2>自动评估结果</h2>
+      <p>加权分：<span id="score">0</span></p>
+      <p>建议等级：<span id="suggestedLevel">-</span></p>
+      <p>建议方向：<span id="suggestedTrack">-</span></p>
+      <button id="calcBtn">计算结果</button>
+      <button id="submitBtn">提交自评</button>
+      <p id="msg"></p>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
