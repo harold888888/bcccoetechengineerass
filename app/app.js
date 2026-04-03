@@ -14,7 +14,7 @@ function toScore(level) {
 function setHint() {
   const direction = document.getElementById("productDirection").value;
   const hint = directionProducts[direction].join(" / ");
-  document.getElementById("productHint").innerText = `建议围绕这些核心产品填写：${hint}`;
+  document.getElementById("productHint").innerText = `å»ºè®®å›´ç»•è¿™äº›æ ¸å¿ƒäº§å“å¡«å†™ï¼š${hint}`;
 }
 
 function populateForm(record) {
@@ -32,8 +32,13 @@ function populateForm(record) {
   document.getElementById("solutionLevel").value = record.solutionLevel || "L100";
   document.getElementById("solutionDirection").value = record.solutionDirection || "Cloud";
   document.getElementById("solutionEvidence").value = record.solutionEvidence || "";
+  document.getElementById("workEmail").value = record.userEmail || document.getElementById("workEmail").value;
   calc();
   setHint();
+}
+
+function normalizeEmail(value) {
+  return String(value || "").trim().toLowerCase();
 }
 
 function calc() {
@@ -83,13 +88,28 @@ async function loadUser() {
   const response = await fetch("/.auth/me");
   const payload = await response.json();
   const clientPrincipal = payload.clientPrincipal;
-  const userName = clientPrincipal?.userDetails || "未知用户";
+  if (!clientPrincipal) {
+    document.getElementById("userName").innerText = "æœªç™»å½•";
+    document.getElementById("userRole").innerText = "Demo Anonymous";
+    document.getElementById("loginLink").classList.remove("hidden");
+    document.getElementById("logoutLink").classList.add("hidden");
+    return null;
+  }
+
+  const userName = normalizeEmail(clientPrincipal.userDetails || "unknown");
   document.getElementById("userName").innerText = userName;
-  return userName.toLowerCase();
+  document.getElementById("workEmail").value = userName;
+  document.getElementById("loginLink").classList.add("hidden");
+  document.getElementById("logoutLink").classList.remove("hidden");
+  return userName;
 }
 
-async function loadExistingSubmission() {
-  const response = await fetch("/api/submissions");
+async function loadExistingSubmission(userEmail) {
+  if (!userEmail) {
+    return;
+  }
+
+  const response = await fetch(`/api/submissions?email=${encodeURIComponent(userEmail)}`);
   if (!response.ok) {
     return;
   }
@@ -97,7 +117,7 @@ async function loadExistingSubmission() {
   const payload = await response.json();
   if (payload.record) {
     populateForm(payload.record);
-    document.getElementById("msg").innerText = "已载入你当前季度的历史提交，可继续更新。";
+    document.getElementById("msg").innerText = "å·²è½½å…¥ä½ å½“å‰å­£åº¦çš„åŽ†å²æäº¤ï¼Œå¯ç»§ç»­æ›´æ–°ã€‚";
   }
 }
 
@@ -107,13 +127,20 @@ document.getElementById("calcBtn").addEventListener("click", calc);
 document.getElementById("submitBtn").addEventListener("click", async () => {
   const payload = calc();
   const msg = document.getElementById("msg");
+  const workEmail = normalizeEmail(document.getElementById("workEmail").value);
 
-  if (!payload.productEvidence || !payload.certIds || !payload.certEvidence || !payload.solutionEvidence) {
-    msg.innerText = "请先完整填写三项证据和证书编号。";
+  if (!workEmail.endsWith("@bluecloudatlas.cn")) {
+    msg.innerText = "è¯·å¡«å†™æœ‰æ•ˆçš„å…¬å¸é‚®ç®±åŽå†æäº¤ã€‚";
     return;
   }
 
-  msg.innerText = "提交中...";
+  if (!payload.productEvidence || !payload.certIds || !payload.certEvidence || !payload.solutionEvidence) {
+    msg.innerText = "è¯·å…ˆå®Œæ•´å¡«å†™ä¸‰é¡¹è¯æ®ã€è¯ä¹¦ç¼–å·å’Œå·¥ä½œé‚®ç®±ã€‚";
+    return;
+  }
+
+  msg.innerText = "æäº¤ä¸­...";
+  payload.workEmail = workEmail;
   const response = await fetch("/api/submit", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -121,11 +148,11 @@ document.getElementById("submitBtn").addEventListener("click", async () => {
   });
 
   if (response.ok) {
-    msg.innerText = "提交成功，系统已保存本季度结果。";
+    msg.innerText = "æäº¤æˆåŠŸï¼Œç³»ç»Ÿå·²ä¿å­˜æœ¬å­£åº¦ç»“æžœã€‚";
     return;
   }
 
-  msg.innerText = `提交失败: ${await response.text()}`;
+  msg.innerText = `æäº¤å¤±è´¥: ${await response.text()}`;
 });
 
 (async () => {
@@ -134,14 +161,14 @@ document.getElementById("submitBtn").addEventListener("click", async () => {
     if (userEmail === "harold.luo@bluecloudatlas.cn") {
       document.getElementById("adminLink").classList.remove("hidden");
       document.getElementById("userRole").innerText = "TL Admin";
-    } else {
+    } else if (userEmail) {
       document.getElementById("userRole").innerText = "Engineer";
     }
 
     setHint();
     calc();
-    await loadExistingSubmission();
+    await loadExistingSubmission(userEmail || normalizeEmail(document.getElementById("workEmail").value));
   } catch (error) {
-    document.getElementById("msg").innerText = `初始化失败: ${error.message}`;
+    document.getElementById("msg").innerText = `åˆå§‹åŒ–å¤±è´¥: ${error.message}`;
   }
 })();
