@@ -55,27 +55,34 @@ const productCatalog = {
     "Azure Database for PostgreSQL",
     "Azure Database for MySQL"
   ],
-  Middleware: [
-    "Service Bus",
-    "Event Grid",
-    "Azure Cache for Redis",
-    "Logic Apps",
-    "Container Apps",
-    "Dapr",
-    "API Management Gateway",
-    "Azure SignalR Service",
-    "Storage Queue",
-    "Web PubSub",
-    "Azure Load Balancer",
-    "Application Gateway",
-    "Front Door"
+  "Modern Work": [
+    "Microsoft 365 Admin Center",
+    "Microsoft Teams",
+    "Teams Phone",
+    "Teams Rooms",
+    "Teams Premium",
+    "Teams Copilot",
+    "SharePoint Online",
+    "OneDrive for Business",
+    "Exchange Online",
+    "Exchange Hybrid",
+    "Microsoft Viva",
+    "Viva Connections",
+    "Viva Engage",
+    "Viva Insights",
+    "Viva Learning",
+    "Microsoft Intune",
+    "Windows Autopilot",
+    "Microsoft Defender for Office 365",
+    "Microsoft Purview for M365",
+    "Power Platform for M365"
   ]
 };
 
 const certLevelById = {
   L100: ["AZ-900", "AI-900", "DP-900", "SC-900", "PL-900", "MS-900"],
-  L200: ["AZ-104", "AZ-204", "AZ-500", "AZ-700", "AI-102", "DP-203", "DP-300", "DP-420", "AZ-400", "SC-200", "SC-300", "SC-400", "PL-400", "PL-600", "MS-102"],
-  L300: ["AZ-305", "SC-100", "DP-600", "DP-700", "AZ-120", "AZ-140"]
+  L200: ["AZ-104", "AZ-204", "AZ-500", "AZ-700", "AI-102", "DP-203", "DP-300", "DP-420", "AZ-400", "SC-200", "SC-300", "SC-400", "PL-400", "PL-600", "MS-700", "MS-721", "MD-102"],
+  L300: ["AZ-305", "SC-100", "DP-600", "DP-700", "AZ-120", "AZ-140", "MS-102"]
 };
 
 let productRowId = 0;
@@ -202,7 +209,6 @@ function calc() {
 
   document.getElementById("score").innerText = weighted;
   document.getElementById("productScore").innerText = productScore;
-  document.getElementById("certLevelDisplay").innerText = certLevel;
   document.getElementById("suggestedLevel").innerText = suggestedLevel;
 
   return {
