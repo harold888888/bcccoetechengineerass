@@ -1,1 +1,18 @@
-{"routes":[{"route":"/api/*","allowedRoles":["authenticated"]}],"responseOverrides":{"401":{"statusCode":302,"redirect":"/.auth/login/aad"}}}
+{
+	"routes": [
+		{
+			"route": "/admin.html",
+			"allowedRoles": ["authenticated"]
+		},
+		{
+			"route": "/api/calibrate",
+			"allowedRoles": ["authenticated"]
+		}
+	],
+	"responseOverrides": {
+		"401": {
+			"statusCode": 302,
+			"redirect": "/.auth/login/aad"
+		}
+	}
+}
