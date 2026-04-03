@@ -1,16 +1,4 @@
-const { TableClient } = require("@azure/data-tables");
-
-function getUserFromClientPrincipal(req) {
-  const header = req.headers["x-ms-client-principal"];
-  if (!header) return null;
-  const decoded = Buffer.from(header, "base64").toString("utf8");
-  const obj = JSON.parse(decoded);
-  return {
-    userId: obj.userId,
-    userDetails: obj.userDetails || "unknown",
-    roles: obj.userRoles || []
-  };
-}
+const { ensureParticipant, getQuarter, getTableClient, getUserFromClientPrincipal } = require("../shared/common");
 
 module.exports = async function (context, req) {
   try {
@@ -20,58 +8,60 @@ module.exports = async function (context, req) {
       return;
     }
 
-    const conn = process.env.STORAGE_CONNECTION_STRING;
-    const tableName = process.env.TABLE_NAME || "assessments";
-    if (!conn) {
-      context.res = { status: 500, body: "Missing storage connection" };
+    if (!ensureParticipant(user.userDetails)) {
+      context.res = { status: 403, body: "Current account is not in the allowed participant list." };
       return;
     }
 
     const body = req.body || {};
-    const required = ["productLevel", "certLevel", "solutionLevel", "weightedScore", "suggestedLevel", "suggestedTrack"];
-    for (const f of required) {
-      if (body[f] === undefined || body[f] === null || body[f] === "") {
-        context.res = { status: 400, body: `Missing field: ${f}` };
+    const requiredFields = ["productLevel", "certLevel", "solutionLevel", "productEvidence", "certIds", "certEvidence", "solutionEvidence", "weightedScore", "suggestedLevel", "suggestedTrack"];
+    for (const field of requiredFields) {
+      if (body[field] === undefined || body[field] === null || body[field] === "") {
+        context.res = { status: 400, body: `Missing field: ${field}` };
         return;
       }
     }
 
-    const client = TableClient.fromConnectionString(conn, tableName);
+    const now = new Date().toISOString();
+    const quarter = getQuarter();
+    const client = getTableClient();
     await client.createTable();
 
-    const now = new Date();
-    const quarter = "2026Q2";
-    const rowKey = `${now.getTime()}`;
-
-    const entity = {
+    await client.upsertEntity({
       partitionKey: quarter,
-      rowKey,
+      rowKey: user.userId,
       userId: user.userId,
       userEmail: user.userDetails,
       productLevel: body.productLevel,
       productDirection: body.productDirection || "",
-      productEvidence: body.productEvidence || "",
+      productEvidence: body.productEvidence,
       certLevel: body.certLevel,
       certDirection: body.certDirection || "",
-      certIds: body.certIds || "",
-      certEvidence: body.certEvidence || "",
+      certIds: body.certIds,
+      certEvidence: body.certEvidence,
       solutionLevel: body.solutionLevel,
       solutionDirection: body.solutionDirection || "",
-      solutionEvidence: body.solutionEvidence || "",
+      solutionEvidence: body.solutionEvidence,
       weightedScore: Number(body.weightedScore),
       suggestedLevel: body.suggestedLevel,
       suggestedTrack: body.suggestedTrack,
-      createdAt: now.toISOString()
-    };
-
-    await client.createEntity(entity);
+      updatedAt: now,
+      tlCalibratedLevel: body.tlCalibratedLevel || "",
+      tlCalibratedTrack: body.tlCalibratedTrack || "",
+      tlComment: body.tlComment || ""
+    }, "Replace");
 
     context.res = {
       status: 200,
       headers: { "Content-Type": "application/json" },
-      body: { ok: true, rowKey, suggestedLevel: body.suggestedLevel, suggestedTrack: body.suggestedTrack }
+      body: {
+        ok: true,
+        rowKey: user.userId,
+        suggestedLevel: body.suggestedLevel,
+        suggestedTrack: body.suggestedTrack
+      }
     };
-  } catch (e) {
-    context.res = { status: 500, body: e.message || "Server error" };
+  } catch (error) {
+    context.res = { status: 500, body: error.message || "Server error" };
   }
 };

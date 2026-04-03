@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TL Calibration Console</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <div>
+        <span class="eyebrow">BlueCloud Atlas</span>
+        <h1>TL Calibration Console</h1>
+        <p class="sub">查看 2026Q2 自评结果，完成等级与方向校准。</p>
+      </div>
+      <div class="hero-actions">
+        <div class="user-chip">
+          <span id="adminName">载入中...</span>
+          <span class="muted">TL Admin</span>
+        </div>
+        <div class="nav-links">
+          <a class="ghost" href="/">返回自评页</a>
+          <a class="ghost" href="/.auth/logout">退出</a>
+        </div>
+      </div>
+    </header>
+
+    <section class="grid two-col">
+      <section class="card table-card">
+        <div class="card-title-row">
+          <h2>提交列表</h2>
+          <span class="weight" id="recordCount">0 条</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>工程师</th>
+              <th>建议等级</th>
+              <th>建议方向</th>
+              <th>TL 校准</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="submissionRows"></tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <div class="card-title-row">
+          <h2>校准表单</h2>
+          <span class="weight" id="selectedUser">未选择</span>
+        </div>
+
+        <p class="hint" id="selectedSummary">选择左侧提交后，可查看证据并完成 TL 校准。</p>
+
+        <label>产品证据</label>
+        <textarea id="reviewProductEvidence" readonly></textarea>
+
+        <label>证书证据</label>
+        <textarea id="reviewCertEvidence" readonly></textarea>
+
+        <label>解决方案证据</label>
+        <textarea id="reviewSolutionEvidence" readonly></textarea>
+
+        <label>TL 校准等级</label>
+        <select id="calibratedLevel">
+          <option>L100</option>
+          <option>L200</option>
+          <option>L300</option>
+        </select>
+
+        <label>TL 校准方向</label>
+        <select id="calibratedTrack">
+          <option>Cloud</option>
+          <option>AI</option>
+          <option>Data</option>
+          <option>MW</option>
+        </select>
+
+        <label>TL 评语</label>
+        <textarea id="calibratedComment" placeholder="填写调整原因、主要短板或下一步动作"></textarea>
+
+        <div class="action-row">
+          <button id="saveCalibration">保存校准</button>
+        </div>
+        <p id="adminMessage" class="message"></p>
+      </section>
+    </section>
+  </main>
+
+  <script src="/admin.js"></script>
+</body>
+</html>

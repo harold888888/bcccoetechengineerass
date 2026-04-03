@@ -1,0 +1,45 @@
+const { ensureTl, getQuarter, getTableClient, getUserFromClientPrincipal } = require("../shared/common");
+
+module.exports = async function (context, req) {
+  try {
+    const user = getUserFromClientPrincipal(req);
+    if (!user) {
+      context.res = { status: 401, body: "Unauthorized" };
+      return;
+    }
+
+    const client = getTableClient();
+    const quarter = getQuarter();
+    const adminView = String(req.query.all || "").toLowerCase() === "true";
+
+    if (adminView) {
+      if (!ensureTl(user.userDetails)) {
+        context.res = { status: 403, body: "Only TL can access all submissions." };
+        return;
+      }
+
+      const records = [];
+      const entities = client.listEntities({ queryOptions: { filter: `PartitionKey eq '${quarter}'` } });
+      for await (const entity of entities) {
+        records.push(entity);
+      }
+
+      records.sort((left, right) => Number(right.weightedScore) - Number(left.weightedScore));
+      context.res = { status: 200, headers: { "Content-Type": "application/json" }, body: { records } };
+      return;
+    }
+
+    try {
+      const record = await client.getEntity(quarter, user.userId);
+      context.res = { status: 200, headers: { "Content-Type": "application/json" }, body: { record } };
+    } catch (error) {
+      if (error.statusCode === 404) {
+        context.res = { status: 200, headers: { "Content-Type": "application/json" }, body: { record: null } };
+        return;
+      }
+      throw error;
+    }
+  } catch (error) {
+    context.res = { status: 500, body: error.message || "Server error" };
+  }
+};
