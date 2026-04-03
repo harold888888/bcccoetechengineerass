@@ -3,9 +3,12 @@ const { ensureTl, getQuarter, getTableClient, getUserFromClientPrincipal } = req
 module.exports = async function (context, req) {
   try {
     const user = getUserFromClientPrincipal(req);
+    const emailQuery = String(req.query.email || "").trim().toLowerCase();
     if (!user) {
-      context.res = { status: 401, body: "Unauthorized" };
-      return;
+      if (!emailQuery) {
+        context.res = { status: 200, headers: { "Content-Type": "application/json" }, body: { record: null } };
+        return;
+      }
     }
 
     const client = getTableClient();
@@ -30,7 +33,7 @@ module.exports = async function (context, req) {
     }
 
     try {
-      const record = await client.getEntity(quarter, user.userId);
+      const record = await client.getEntity(quarter, user ? user.userId : emailQuery);
       context.res = { status: 200, headers: { "Content-Type": "application/json" }, body: { record } };
     } catch (error) {
       if (error.statusCode === 404) {
