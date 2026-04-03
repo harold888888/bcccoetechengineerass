@@ -12,45 +12,54 @@
       <div>
         <span class="eyebrow">BlueCloud Atlas</span>
         <h1>Engineering Capability Assessment 2026Q2</h1>
-        <p class="sub">三维技术模型：产品了解 50% + 证书链 30% + 解决方案 20%</p>
+        <p class="sub">ä¸‰ç»´æŠ€æœ¯æ¨¡åž‹ï¼šäº§å“äº†è§£ 50% + è¯ä¹¦é“¾ 30% + è§£å†³æ–¹æ¡ˆ 20%</p>
       </div>
       <div class="hero-actions">
         <div class="user-chip">
-          <span id="userName">载入中...</span>
+          <span id="userName">è½½å…¥ä¸­...</span>
           <span id="userRole" class="muted"></span>
         </div>
         <div class="nav-links">
-          <a id="adminLink" class="ghost hidden" href="/admin.html">TL 校准台</a>
-          <a class="ghost" href="/.auth/logout">退出</a>
+          <a id="adminLink" class="ghost hidden" href="/admin.html">TL æ ¡å‡†å°</a>
+          <a id="loginLink" class="ghost" href="/.auth/login/aad">ç™»å½•</a>
+          <a id="logoutLink" class="ghost hidden" href="/.auth/logout">é€€å‡º</a>
         </div>
       </div>
     </header>
 
     <section class="banner">
       <div>
-        <strong>填写要求</strong>
-        <p>每项都必须填写证据。系统会自动输出建议等级与建议方向，TL 后续将基于证据做校准。</p>
+        <strong>å¡«å†™è¦æ±‚</strong>
+        <p>æ¯é¡¹éƒ½å¿…é¡»å¡«å†™è¯æ®ã€‚ç³»ç»Ÿä¼šè‡ªåŠ¨è¾“å‡ºå»ºè®®ç­‰çº§ä¸Žå»ºè®®æ–¹å‘ï¼ŒTL åŽç»­å°†åŸºäºŽè¯æ®åšæ ¡å‡†ã€‚</p>
       </div>
       <div class="pill-group">
-        <span class="pill">L100: 可执行</span>
-        <span class="pill">L200: 可负责</span>
-        <span class="pill">L300: 可引领</span>
+        <span class="pill">L100: å¯æ‰§è¡Œ</span>
+        <span class="pill">L200: å¯è´Ÿè´£</span>
+        <span class="pill">L300: å¯å¼•é¢†</span>
       </div>
+    </section>
+
+    <section class="identity-bar">
+      <div>
+        <label for="workEmail">å·¥ä½œé‚®ç®±</label>
+        <input id="workEmail" type="email" placeholder="ä¾‹å¦‚ harold.luo@bluecloudatlas.cn" />
+      </div>
+      <p class="identity-hint">Demo æ¨¡å¼ä¸‹å¯ä¸ç™»å½•ç›´æŽ¥æäº¤ï¼Œä½†å¿…é¡»å¡«å†™ç™½åå•å†…çš„å…¬å¸é‚®ç®±ã€‚ç™»å½•ä»…ç”¨äºŽåŽç»­ TL æ ¡å‡†å’Œç®¡ç†èƒ½åŠ›ã€‚</p>
     </section>
 
     <section class="grid two-col">
       <section class="card">
         <div class="card-title-row">
-          <h2>产品了解</h2>
+          <h2>äº§å“äº†è§£</h2>
           <span class="weight">50%</span>
         </div>
-        <label>等级</label>
+        <label>ç­‰çº§</label>
         <select id="productLevel">
           <option>L100</option>
           <option>L200</option>
           <option>L300</option>
         </select>
-        <label>方向</label>
+        <label>æ–¹å‘</label>
         <select id="productDirection">
           <option>Cloud</option>
           <option>AI</option>
@@ -58,83 +67,83 @@
           <option>MW</option>
         </select>
         <p class="hint" id="productHint"></p>
-        <label>证据</label>
-        <textarea id="productEvidence" placeholder="描述你对该方向关键产品的理解深度、对应项目场景以及采用的 best practice"></textarea>
+        <label>è¯æ®</label>
+        <textarea id="productEvidence" placeholder="æè¿°ä½ å¯¹è¯¥æ–¹å‘å…³é”®äº§å“çš„ç†è§£æ·±åº¦ã€å¯¹åº”é¡¹ç›®åœºæ™¯ä»¥åŠé‡‡ç”¨çš„ best practice"></textarea>
       </section>
 
       <section class="card">
         <div class="card-title-row">
-          <h2>证书链</h2>
+          <h2>è¯ä¹¦é“¾</h2>
           <span class="weight">30%</span>
         </div>
-        <label>等级</label>
+        <label>ç­‰çº§</label>
         <select id="certLevel">
           <option>L100</option>
           <option>L200</option>
           <option>L300</option>
         </select>
-        <label>方向</label>
+        <label>æ–¹å‘</label>
         <select id="certDirection">
           <option>Cloud</option>
           <option>AI</option>
           <option>Data</option>
           <option>MW</option>
         </select>
-        <label>证书编号</label>
-        <input id="certIds" placeholder="例如 AZ-104; AI-102" />
-        <label>证据</label>
-        <textarea id="certEvidence" placeholder="说明证书能力如何在项目中被实际使用，例如架构设计、排障、交付、治理"></textarea>
+        <label>è¯ä¹¦ç¼–å·</label>
+        <input id="certIds" placeholder="ä¾‹å¦‚ AZ-104; AI-102" />
+        <label>è¯æ®</label>
+        <textarea id="certEvidence" placeholder="è¯´æ˜Žè¯ä¹¦èƒ½åŠ›å¦‚ä½•åœ¨é¡¹ç›®ä¸­è¢«å®žé™…ä½¿ç”¨ï¼Œä¾‹å¦‚æž¶æž„è®¾è®¡ã€æŽ’éšœã€äº¤ä»˜ã€æ²»ç†"></textarea>
       </section>
 
       <section class="card">
         <div class="card-title-row">
-          <h2>解决方案</h2>
+          <h2>è§£å†³æ–¹æ¡ˆ</h2>
           <span class="weight">20%</span>
         </div>
-        <label>等级</label>
+        <label>ç­‰çº§</label>
         <select id="solutionLevel">
           <option>L100</option>
           <option>L200</option>
           <option>L300</option>
         </select>
-        <label>方向</label>
+        <label>æ–¹å‘</label>
         <select id="solutionDirection">
           <option>Cloud</option>
           <option>AI</option>
           <option>Data</option>
           <option>MW</option>
         </select>
-        <label>证据</label>
-        <textarea id="solutionEvidence" placeholder="至少填写一个方案案例，包括目标、架构取舍、关键设计和落地结果"></textarea>
+        <label>è¯æ®</label>
+        <textarea id="solutionEvidence" placeholder="è‡³å°‘å¡«å†™ä¸€ä¸ªæ–¹æ¡ˆæ¡ˆä¾‹ï¼ŒåŒ…æ‹¬ç›®æ ‡ã€æž¶æž„å–èˆã€å…³é”®è®¾è®¡å’Œè½åœ°ç»“æžœ"></textarea>
       </section>
 
       <section class="card result-card">
         <div class="card-title-row">
-          <h2>自动输出结果</h2>
+          <h2>è‡ªåŠ¨è¾“å‡ºç»“æžœ</h2>
           <span class="weight">System</span>
         </div>
         <div class="metrics">
           <div class="metric">
-            <span class="metric-label">加权分</span>
+            <span class="metric-label">åŠ æƒåˆ†</span>
             <strong id="score">0</strong>
           </div>
           <div class="metric">
-            <span class="metric-label">建议等级</span>
+            <span class="metric-label">å»ºè®®ç­‰çº§</span>
             <strong id="suggestedLevel">-</strong>
           </div>
           <div class="metric">
-            <span class="metric-label">建议方向</span>
+            <span class="metric-label">å»ºè®®æ–¹å‘</span>
             <strong id="suggestedTrack">-</strong>
           </div>
         </div>
         <div class="criteria-box">
-          <p>L100: 低于 180</p>
+          <p>L100: ä½ŽäºŽ 180</p>
           <p>L200: 180 - 259</p>
-          <p>L300: 260 及以上</p>
+          <p>L300: 260 åŠä»¥ä¸Š</p>
         </div>
         <div class="action-row">
-          <button id="calcBtn">计算结果</button>
-          <button id="submitBtn">提交自评</button>
+          <button id="calcBtn">è®¡ç®—ç»“æžœ</button>
+          <button id="submitBtn">æäº¤è‡ªè¯„</button>
         </div>
         <p id="msg" class="message"></p>
       </section>
