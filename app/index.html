@@ -65,14 +65,13 @@
           <h2>Certification Strength</h2>
           <span class="weight">30%</span>
         </div>
-        <label>Level</label>
-        <select id="certLevel">
-          <option>L100</option>
-          <option>L200</option>
-          <option>L300</option>
-        </select>
         <label>Certificate IDs</label>
         <input id="certIds" placeholder="for example AZ-104; AI-102; DP-203" />
+        <p class="hint">The certification level is inferred automatically from the certificate IDs you enter.</p>
+        <div class="inline-status">
+          <span class="metric-label">Inferred certification level</span>
+          <strong id="certLevelDisplay">L100</strong>
+        </div>
         <label>Certification Evidence</label>
         <textarea id="certEvidence" placeholder="Explain how the certifications were used in actual delivery, architecture, governance, or troubleshooting."></textarea>
       </section>

@@ -1,34 +1,82 @@
-const productCatalog = [
-  "Azure Landing Zone",
-  "Entra ID",
-  "Azure Virtual Network",
-  "AKS",
-  "App Service",
-  "Azure Functions",
-  "API Management",
-  "Key Vault",
-  "Azure Monitor",
-  "Azure OpenAI",
-  "Azure AI Foundry",
-  "Azure AI Search",
-  "Prompt Flow",
-  "Content Safety",
-  "Document Intelligence",
-  "Microsoft Fabric",
-  "Azure Data Factory",
-  "ADLS Gen2",
-  "Synapse Analytics",
-  "Azure SQL",
-  "Cosmos DB",
-  "Power BI",
-  "Purview",
-  "Service Bus",
-  "Event Grid",
-  "Azure Cache for Redis",
-  "Logic Apps",
-  "Container Apps",
-  "Dapr"
-];
+const productCatalog = {
+  Cloud: [
+    "Azure Landing Zone",
+    "Entra ID",
+    "Azure Virtual Network",
+    "Azure VPN Gateway",
+    "Azure ExpressRoute",
+    "AKS",
+    "App Service",
+    "Azure Functions",
+    "Azure Container Registry",
+    "Azure Container Apps",
+    "API Management",
+    "Key Vault",
+    "Azure Monitor",
+    "Log Analytics",
+    "Application Insights",
+    "Defender for Cloud",
+    "Azure Policy",
+    "Bicep",
+    "Terraform on Azure",
+    "Azure Backup"
+  ],
+  AI: [
+    "Azure OpenAI",
+    "Azure AI Foundry",
+    "Azure AI Search",
+    "Prompt Flow",
+    "Content Safety",
+    "Document Intelligence",
+    "Speech Service",
+    "Language Service",
+    "Translator",
+    "Computer Vision",
+    "Custom Vision",
+    "Azure Machine Learning",
+    "Model Catalog",
+    "Vector Search",
+    "RAG Pipeline"
+  ],
+  Data: [
+    "Microsoft Fabric",
+    "Azure Data Factory",
+    "ADLS Gen2",
+    "Synapse Analytics",
+    "Azure SQL",
+    "Managed Instance",
+    "Cosmos DB",
+    "Power BI",
+    "Purview",
+    "Event Hubs",
+    "Stream Analytics",
+    "Databricks on Azure",
+    "Data Explorer",
+    "Azure Database for PostgreSQL",
+    "Azure Database for MySQL"
+  ],
+  Middleware: [
+    "Service Bus",
+    "Event Grid",
+    "Azure Cache for Redis",
+    "Logic Apps",
+    "Container Apps",
+    "Dapr",
+    "API Management Gateway",
+    "Azure SignalR Service",
+    "Storage Queue",
+    "Web PubSub",
+    "Azure Load Balancer",
+    "Application Gateway",
+    "Front Door"
+  ]
+};
+
+const certLevelById = {
+  L100: ["AZ-900", "AI-900", "DP-900", "SC-900", "PL-900", "MS-900"],
+  L200: ["AZ-104", "AZ-204", "AZ-500", "AZ-700", "AI-102", "DP-203", "DP-300", "DP-420", "AZ-400", "SC-200", "SC-300", "SC-400", "PL-400", "PL-600", "MS-102"],
+  L300: ["AZ-305", "SC-100", "DP-600", "DP-700", "AZ-120", "AZ-140"]
+};
 
 let productRowId = 0;
 
@@ -54,9 +102,12 @@ function createProductRow(product = "", level = "L100") {
   row.className = "product-row";
   row.dataset.rowId = String(productRowId);
 
-  const options = productCatalog.map((item) => {
-    const selected = item === product ? " selected" : "";
-    return `<option value="${item}"${selected}>${item}</option>`;
+  const options = Object.entries(productCatalog).map(([group, items]) => {
+    const groupOptions = items.map((item) => {
+      const selected = item === product ? " selected" : "";
+      return `<option value="${item}"${selected}>${item}</option>`;
+    }).join("");
+    return `<optgroup label="${group}">${groupOptions}</optgroup>`;
   }).join("");
 
   row.innerHTML = `
@@ -113,7 +164,6 @@ function populateForm(record) {
   }
 
   document.getElementById("productEvidence").value = record.productEvidence || "";
-  document.getElementById("certLevel").value = record.certLevel || "L100";
   document.getElementById("certIds").value = record.certIds || "";
   document.getElementById("certEvidence").value = record.certEvidence || "";
   document.getElementById("solutionLevel").value = record.solutionLevel || "L100";
@@ -121,9 +171,28 @@ function populateForm(record) {
   calc();
 }
 
+function inferCertLevel(certIdsRaw) {
+  const certIds = String(certIdsRaw || "")
+    .toUpperCase()
+    .split(/[;,\s]+/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+  if (certIds.some((id) => certLevelById.L300.includes(id))) {
+    return "L300";
+  }
+  if (certIds.some((id) => certLevelById.L200.includes(id))) {
+    return "L200";
+  }
+  if (certIds.some((id) => certLevelById.L100.includes(id))) {
+    return "L100";
+  }
+  return certIds.length > 0 ? "L200" : "L100";
+}
+
 function calc() {
   const products = getProducts();
-  const certLevel = document.getElementById("certLevel").value;
+  const certLevel = inferCertLevel(document.getElementById("certIds").value);
   const solutionLevel = document.getElementById("solutionLevel").value;
   const productScore = products.length === 0
     ? 0
@@ -133,6 +202,7 @@ function calc() {
 
   document.getElementById("score").innerText = weighted;
   document.getElementById("productScore").innerText = productScore;
+  document.getElementById("certLevelDisplay").innerText = certLevel;
   document.getElementById("suggestedLevel").innerText = suggestedLevel;
 
   return {
@@ -171,7 +241,7 @@ document.getElementById("addProductBtn").addEventListener("click", () => {
 });
 
 document.getElementById("calcBtn").addEventListener("click", calc);
-document.getElementById("certLevel").addEventListener("change", calc);
+document.getElementById("certIds").addEventListener("input", calc);
 document.getElementById("solutionLevel").addEventListener("change", calc);
 
 document.getElementById("submitBtn").addEventListener("click", async () => {

@@ -224,6 +224,20 @@ textarea {
   font-size: 14px;
 }
 
+.inline-status {
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: var(--panel-alt);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.inline-status strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 18px;
+}
+
 .metrics {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
