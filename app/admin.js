@@ -21,7 +21,7 @@ function selectRecord(record) {
   document.getElementById("selectedUser").innerText = record.userEmail || "Unknown";
   document.getElementById("selectedSummary").innerText = `Suggested result: ${record.suggestedLevel} (${record.weightedScore || 0})`;
   document.getElementById("reviewProducts").value = Array.isArray(record.products)
-    ? record.products.map((item) => `${item.product}: ${item.level}`).join("\n")
+    ? record.products.map((item) => (typeof item === "string" ? item : item.product || "")).filter(Boolean).join("\n")
     : "";
   document.getElementById("reviewProductEvidence").value = record.productEvidence || "";
   document.getElementById("reviewCertEvidence").value = `Certificate IDs: ${record.certIds || ""}\n\n${record.certEvidence || ""}`;

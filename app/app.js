@@ -99,11 +99,17 @@ function scoreToLevel(score) {
   return "L100";
 }
 
+function inferProductLevelByCount(count) {
+  if (count >= 8) return "L300";
+  if (count >= 4) return "L200";
+  return count > 0 ? "L100" : "L100";
+}
+
 function normalizeEmail(value) {
   return String(value || "").trim().toLowerCase();
 }
 
-function createProductRow(product = "", level = "L100") {
+function createProductRow(product = "") {
   productRowId += 1;
   const row = document.createElement("div");
   row.className = "product-row";
@@ -121,11 +127,6 @@ function createProductRow(product = "", level = "L100") {
     <select class="product-name">
       <option value="">Select a product</option>
       ${options}
-    </select>
-    <select class="product-level">
-      <option value="L100"${level === "L100" ? " selected" : ""}>L100</option>
-      <option value="L200"${level === "L200" ? " selected" : ""}>L200</option>
-      <option value="L300"${level === "L300" ? " selected" : ""}>L300</option>
     </select>
     <button type="button" class="ghost danger remove-product">Remove</button>
   `;
@@ -147,11 +148,8 @@ function createProductRow(product = "", level = "L100") {
 
 function getProducts() {
   return Array.from(document.querySelectorAll(".product-row"))
-    .map((row) => ({
-      product: row.querySelector(".product-name").value,
-      level: row.querySelector(".product-level").value
-    }))
-    .filter((item) => item.product);
+    .map((row) => row.querySelector(".product-name").value)
+    .filter((item) => Boolean(item));
 }
 
 function populateForm(record) {
@@ -164,10 +162,14 @@ function populateForm(record) {
 
   const products = Array.isArray(record.products) && record.products.length > 0
     ? record.products
-    : [{ product: "", level: "L100" }];
+    : [""];
 
   for (const item of products) {
-    createProductRow(item.product, item.level || "L100");
+    if (typeof item === "string") {
+      createProductRow(item);
+    } else {
+      createProductRow(item.product || "");
+    }
   }
 
   document.getElementById("productEvidence").value = record.productEvidence || "";
@@ -201,9 +203,8 @@ function calc() {
   const products = getProducts();
   const certLevel = inferCertLevel(document.getElementById("certIds").value);
   const solutionLevel = document.getElementById("solutionLevel").value;
-  const productScore = products.length === 0
-    ? 0
-    : Math.round(products.reduce((sum, item) => sum + toScore(item.level), 0) / products.length);
+  const productLevel = inferProductLevelByCount(products.length);
+  const productScore = toScore(productLevel);
   const weighted = Math.round(productScore * 0.5 + toScore(certLevel) * 0.3 + toScore(solutionLevel) * 0.2);
   const suggestedLevel = scoreToLevel(weighted);
 
@@ -213,6 +214,7 @@ function calc() {
 
   return {
     products,
+    productLevel,
     productScore,
     certLevel,
     solutionLevel,
