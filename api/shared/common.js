@@ -42,7 +42,7 @@ function getTableClient() {
 function ensureParticipant(email) {
   const allowed = parseEnvList(
     "ALLOWED_EMAILS",
-    "kayn@bluecloudatlas.cn;xiaoen.zheng@bluecloudatlas.cn;gary.wang@bluecloudatlas.cn;chenkeyu@bluecloudatlas.cn;fenglianran@bluecloudatlas.cn"
+    "harold.luo@bluecloudatlas.cn;kayn@bluecloudatlas.cn;xiaoen.zheng@bluecloudatlas.cn;gary.wang@bluecloudatlas.cn;chenkeyu@bluecloudatlas.cn;fenglianran@bluecloudatlas.cn"
   );
   return allowed.includes(normalizeEmail(email));
 }
