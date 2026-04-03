@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,98 +7,91 @@
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <!doctype html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TL Calibration Console</title>
-    <link rel="stylesheet" href="/styles.css" />
-  </head>
-  <body>
-    <main class="wrap">
-      <header class="hero">
-        <div>
-          <span class="eyebrow">BlueCloud Atlas</span>
-          <h1>TL Calibration Console</h1>
-          <p class="sub">Review all quarter submissions and calibrate level and track.</p>
+  <main class="wrap">
+    <header class="hero">
+      <div>
+        <span class="eyebrow">BlueCloud Atlas</span>
+        <h1>TL Calibration Console</h1>
+        <p class="sub">Review quarter submissions and calibrate the final level.</p>
+      </div>
+      <div class="hero-actions">
+        <div class="user-chip">
+          <span id="adminName">TL Review</span>
+          <span class="muted">Allowlisted Email Required</span>
         </div>
-        <div class="hero-actions">
-          <div class="user-chip">
-            <span id="adminName">Loading...</span>
-            <span class="muted">TL Admin</span>
-          </div>
-          <div class="nav-links">
-            <a class="ghost" href="/">Back to Self Review</a>
-            <a class="ghost" href="/.auth/logout">Logout</a>
-          </div>
+        <div class="nav-links">
+          <a class="ghost" href="/">Back to Self Review</a>
         </div>
-      </header>
+      </div>
+    </header>
 
-      <section class="grid two-col">
-        <section class="card table-card">
-          <div class="card-title-row">
-            <h2>Submission List</h2>
-            <span class="weight" id="recordCount">0 records</span>
-          </div>
+    <section class="identity-bar">
+      <div>
+        <label for="tlEmail">TL Email</label>
+        <input id="tlEmail" type="email" placeholder="for example harold.luo@bluecloudatlas.cn" />
+      </div>
+      <p class="identity-hint">This console uses TL email allowlist validation instead of site login.</p>
+    </section>
 
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>User</th>
-                <th>Suggested Level</th>
-                <th>Suggested Track</th>
-                <th>TL Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="submissionRows"></tbody>
-          </table>
-        </section>
+    <section class="grid two-col">
+      <section class="card table-card">
+        <div class="card-title-row">
+          <h2>Submission List</h2>
+          <span class="weight" id="recordCount">0 records</span>
+        </div>
 
-        <section class="card">
-          <div class="card-title-row">
-            <h2>Calibration Form</h2>
-            <span class="weight" id="selectedUser">No selection</span>
-          </div>
-
-          <p class="hint" id="selectedSummary">Select a record from the left table to inspect evidence and complete TL calibration.</p>
-
-          <label>Product Evidence</label>
-          <textarea id="reviewProductEvidence" readonly></textarea>
-
-          <label>Certification Evidence</label>
-          <textarea id="reviewCertEvidence" readonly></textarea>
-
-          <label>Solution Evidence</label>
-          <textarea id="reviewSolutionEvidence" readonly></textarea>
-
-          <label>TL Level</label>
-          <select id="calibratedLevel">
-            <option>L100</option>
-            <option>L200</option>
-            <option>L300</option>
-          </select>
-
-          <label>TL Track</label>
-          <select id="calibratedTrack">
-            <option>Cloud</option>
-            <option>AI</option>
-            <option>Data</option>
-            <option>MW</option>
-          </select>
-
-          <label>TL Comment</label>
-          <textarea id="calibratedComment" placeholder="Describe the adjustment reason, the observed gap, and the next action."></textarea>
-
-          <div class="action-row">
-            <button id="saveCalibrationBtn">Save Calibration</button>
-          </div>
-          <p id="adminMessage" class="message"></p>
-        </section>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Suggested Level</th>
+              <th>Weighted Score</th>
+              <th>TL Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="submissionRows"></tbody>
+        </table>
       </section>
-    </main>
 
-    <script src="/admin.js"></script>
-  </body>
-  </html>
+      <section class="card">
+        <div class="card-title-row">
+          <h2>Calibration Form</h2>
+          <span class="weight" id="selectedUser">No selection</span>
+        </div>
+
+        <p class="hint" id="selectedSummary">Select a record from the left table to inspect evidence and complete TL calibration.</p>
+
+        <label>Products</label>
+        <textarea id="reviewProducts" readonly></textarea>
+
+        <label>Product Evidence</label>
+        <textarea id="reviewProductEvidence" readonly></textarea>
+
+        <label>Certification Evidence</label>
+        <textarea id="reviewCertEvidence" readonly></textarea>
+
+        <label>Solution Evidence</label>
+        <textarea id="reviewSolutionEvidence" readonly></textarea>
+
+        <label>TL Level</label>
+        <select id="calibratedLevel">
+          <option>L100</option>
+          <option>L200</option>
+          <option>L300</option>
+        </select>
+
+        <label>TL Comment</label>
+        <textarea id="calibratedComment" placeholder="Describe the adjustment reason, the observed gap, and the next action."></textarea>
+
+        <div class="action-row">
+          <button id="saveCalibrationBtn">Save Calibration</button>
+        </div>
+        <p id="adminMessage" class="message"></p>
+      </section>
+    </section>
+  </main>
+
+  <script src="/admin.js"></script>
+</body>
+</html>

@@ -1,18 +1,6 @@
 {
-	"routes": [
-		{
-			"route": "/admin.html",
-			"allowedRoles": ["authenticated"]
-		},
-		{
-			"route": "/api/calibrate",
-			"allowedRoles": ["authenticated"]
-		}
-	],
-	"responseOverrides": {
-		"401": {
-			"statusCode": 302,
-			"redirect": "/.auth/login/aad"
-		}
-	}
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/api/*", "/*.css", "/*.js", "/*.png", "/*.jpg", "/*.svg"]
+  }
 }

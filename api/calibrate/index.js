@@ -1,20 +1,18 @@
-const { ensureTl, getQuarter, getTableClient, getUserFromClientPrincipal } = require("../shared/common");
+const { ensureTl, getQuarter, getTableClient, getUserFromClientPrincipal, normalizeEmail } = require("../shared/common");
 
 module.exports = async function (context, req) {
   try {
     const user = getUserFromClientPrincipal(req);
-    if (!user) {
-      context.res = { status: 401, body: "Unauthorized" };
-      return;
-    }
+    const tlEmail = normalizeEmail((req.body || {}).tlEmail);
+    const effectiveTl = user ? user.userDetails : tlEmail;
 
-    if (!ensureTl(user.userDetails)) {
+    if (!ensureTl(effectiveTl)) {
       context.res = { status: 403, body: "Only TL can calibrate submissions." };
       return;
     }
 
-    const { rowKey, tlCalibratedLevel, tlCalibratedTrack, tlComment } = req.body || {};
-    if (!rowKey || !tlCalibratedLevel || !tlCalibratedTrack || !tlComment) {
+    const { rowKey, tlCalibratedLevel, tlComment } = req.body || {};
+    if (!rowKey || !tlCalibratedLevel || !tlComment) {
       context.res = { status: 400, body: "Missing required calibration fields." };
       return;
     }
@@ -24,9 +22,8 @@ module.exports = async function (context, req) {
     const entity = await client.getEntity(quarter, rowKey);
 
     entity.tlCalibratedLevel = tlCalibratedLevel;
-    entity.tlCalibratedTrack = tlCalibratedTrack;
     entity.tlComment = tlComment;
-    entity.tlUpdatedBy = user.userDetails;
+    entity.tlUpdatedBy = effectiveTl;
     entity.tlUpdatedAt = new Date().toISOString();
 
     await client.updateEntity(entity, "Replace");

@@ -21,12 +21,17 @@ module.exports = async function (context, req) {
     }
 
     const body = req.body || {};
-    const requiredFields = ["productLevel", "certLevel", "solutionLevel", "productEvidence", "certIds", "certEvidence", "solutionEvidence", "weightedScore", "suggestedLevel", "suggestedTrack"];
+    const requiredFields = ["certLevel", "solutionLevel", "productEvidence", "certIds", "certEvidence", "solutionEvidence", "weightedScore", "suggestedLevel"];
     for (const field of requiredFields) {
       if (body[field] === undefined || body[field] === null || body[field] === "") {
         context.res = { status: 400, body: `Missing field: ${field}` };
         return;
       }
+    }
+
+    if (!Array.isArray(body.products) || body.products.length === 0) {
+      context.res = { status: 400, body: "Missing products" };
+      return;
     }
 
     const now = new Date().toISOString();
@@ -39,22 +44,18 @@ module.exports = async function (context, req) {
       rowKey: user.userId,
       userId: user.userId,
       userEmail: user.userDetails,
-      productLevel: body.productLevel,
-      productDirection: body.productDirection || "",
+      products: JSON.stringify(body.products),
+      productScore: Number(body.productScore || 0),
       productEvidence: body.productEvidence,
       certLevel: body.certLevel,
-      certDirection: body.certDirection || "",
       certIds: body.certIds,
       certEvidence: body.certEvidence,
       solutionLevel: body.solutionLevel,
-      solutionDirection: body.solutionDirection || "",
       solutionEvidence: body.solutionEvidence,
       weightedScore: Number(body.weightedScore),
       suggestedLevel: body.suggestedLevel,
-      suggestedTrack: body.suggestedTrack,
       updatedAt: now,
       tlCalibratedLevel: body.tlCalibratedLevel || "",
-      tlCalibratedTrack: body.tlCalibratedTrack || "",
       tlComment: body.tlComment || ""
     }, "Replace");
 
@@ -64,8 +65,7 @@ module.exports = async function (context, req) {
       body: {
         ok: true,
         rowKey: user.userId,
-        suggestedLevel: body.suggestedLevel,
-        suggestedTrack: body.suggestedTrack
+        suggestedLevel: body.suggestedLevel
       }
     };
   } catch (error) {

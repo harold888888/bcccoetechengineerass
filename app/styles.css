@@ -110,6 +110,11 @@ button {
   background: #fff;
 }
 
+.danger {
+	color: #8d2a2a;
+	border-color: #d7aaaa;
+}
+
 .hidden {
   display: none;
 }
@@ -263,6 +268,24 @@ textarea {
   margin-top: 18px;
 }
 
+.action-row.compact {
+  margin-top: 12px;
+}
+
+.stack-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.product-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 140px 120px;
+  gap: 10px;
+  align-items: center;
+}
+
 button {
   border: none;
   background: linear-gradient(135deg, var(--accent), var(--accent-dark));
@@ -278,6 +301,25 @@ button {
 
 .table-card {
   overflow: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.data-table th {
+  font-size: 13px;
+  color: var(--muted);
 }
 
 table {
@@ -316,4 +358,8 @@ tr:hover {
   .nav-links {
     flex-wrap: wrap;
   }
+
+	.product-row {
+		grid-template-columns: 1fr;
+	}
 }

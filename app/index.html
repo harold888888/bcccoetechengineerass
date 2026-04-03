@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,161 +12,119 @@
       <div>
         <span class="eyebrow">BlueCloud Atlas</span>
         <h1>Engineering Capability Assessment 2026Q2</h1>
-        <p class="sub">Ã¤Â¸â€°Ã§Â»Â´Ã¦Å â‚¬Ã¦Å“Â¯Ã¦Â¨Â¡Ã¥Å¾â€¹Ã¯Â¼Å¡Ã¤ÂºÂ§Ã¥â€œÂÃ¤Âºâ€ Ã¨Â§Â£ 50% + Ã¨Â¯ÂÃ¤Â¹Â¦Ã©â€œÂ¾ 30% + Ã¨Â§Â£Ã¥â€ Â³Ã¦â€“Â¹Ã¦Â¡Ë† 20%</p>
+        <p class="sub">Weighted model: Product Mastery 50% + Certification Strength 30% + Solution Delivery 20%</p>
       </div>
       <div class="hero-actions">
-        <!doctype html>
-        <html lang="en">
-        <head>
-          <meta charset="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>Engineering Capability Assessment</title>
-          <link rel="stylesheet" href="/styles.css" />
-        </head>
-        <body>
-          <main class="wrap">
-            <header class="hero">
-              <div>
-                <span class="eyebrow">BlueCloud Atlas</span>
-                <h1>Engineering Capability Assessment 2026Q2</h1>
-                <p class="sub">Three dimensions: Product Knowledge 50% + Certification Path 30% + Solution Design 20%</p>
-              </div>
-              <div class="hero-actions">
-                <div class="user-chip">
-                  <span id="userName">Loading...</span>
-                  <span id="userRole" class="muted"></span>
-                </div>
-                <div class="nav-links">
-                  <a id="adminLink" class="ghost hidden" href="/admin.html">TL Review Console</a>
-                  <a id="loginLink" class="ghost" href="/.auth/login/aad">Login</a>
-                  <a id="logoutLink" class="ghost hidden" href="/.auth/logout">Logout</a>
-                </div>
-              </div>
-            </header>
+        <div class="user-chip">
+          <span id="userName">Self Review</span>
+          <span id="userRole" class="muted">Demo Mode</span>
+        </div>
+        <div class="nav-links">
+          <a class="ghost" href="/admin.html">Open TL Console</a>
+        </div>
+      </div>
+    </header>
 
-            <section class="banner">
-              <div>
-                <strong>How to fill</strong>
-                <p>Every section requires evidence. The system calculates suggested level and track. TL will calibrate later based on the submitted evidence.</p>
-              </div>
-              <div class="pill-group">
-                <span class="pill">L100: Execute</span>
-                <span class="pill">L200: Own</span>
-                <span class="pill">L300: Lead</span>
-              </div>
-            </section>
+    <section class="banner">
+      <div>
+        <strong>How this model works</strong>
+        <p>Select the Microsoft products you know, assign a mastery level for each product, and provide certification and solution evidence. The system calculates the final level by weight.</p>
+      </div>
+      <div class="pill-group">
+        <span class="pill">L100: Execute</span>
+        <span class="pill">L200: Own</span>
+        <span class="pill">L300: Lead</span>
+      </div>
+    </section>
 
-            <section class="identity-bar">
-              <div>
-                <label for="workEmail">Work Email</label>
-                <input id="workEmail" type="email" placeholder="for example harold.luo@bluecloudatlas.cn" />
-              </div>
-              <p class="identity-hint">Demo mode allows submit without login, but the email must be in the company allowlist. Login is still available for TL review and later admin features.</p>
-            </section>
+    <section class="identity-bar">
+      <div>
+        <label for="workEmail">Work Email</label>
+        <input id="workEmail" type="email" placeholder="for example harold.luo@bluecloudatlas.cn" />
+      </div>
+      <p class="identity-hint">This demo does not require login. Submission and TL actions are gated by allowed company email addresses.</p>
+    </section>
 
-            <section class="grid two-col">
-              <section class="card">
-                <div class="card-title-row">
-                  <h2>Product Knowledge</h2>
-                  <span class="weight">50%</span>
-                </div>
-                <label>Level</label>
-                <select id="productLevel">
-                  <option>L100</option>
-                  <option>L200</option>
-                  <option>L300</option>
-                </select>
-                <label>Track</label>
-                <select id="productDirection">
-                  <option>Cloud</option>
-                  <option>AI</option>
-                  <option>Data</option>
-                  <option>MW</option>
-                </select>
-                <p class="hint" id="productHint"></p>
-                <label>Evidence</label>
-                <textarea id="productEvidence" placeholder="Describe product understanding, real project usage, and best practices you applied."></textarea>
-              </section>
+    <section class="grid two-col">
+      <section class="card">
+        <div class="card-title-row">
+          <h2>Product Mastery</h2>
+          <span class="weight">50%</span>
+        </div>
+        <p class="hint">Add the Microsoft products you know and assign L100, L200, or L300 for each one.</p>
+        <div id="productRows" class="stack-list"></div>
+        <div class="action-row compact">
+          <button id="addProductBtn" type="button">Add Product</button>
+        </div>
+        <label>Product Evidence</label>
+        <textarea id="productEvidence" placeholder="Describe the strongest project evidence behind your selected product mastery."></textarea>
+      </section>
 
-              <section class="card">
-                <div class="card-title-row">
-                  <h2>Certification Path</h2>
-                  <span class="weight">30%</span>
-                </div>
-                <label>Level</label>
-                <select id="certLevel">
-                  <option>L100</option>
-                  <option>L200</option>
-                  <option>L300</option>
-                </select>
-                <label>Track</label>
-                <select id="certDirection">
-                  <option>Cloud</option>
-                  <option>AI</option>
-                  <option>Data</option>
-                  <option>MW</option>
-                </select>
-                <label>Certificate IDs</label>
-                <input id="certIds" placeholder="for example AZ-104; AI-102" />
-                <label>Evidence</label>
-                <textarea id="certEvidence" placeholder="Explain how the certificate knowledge was used in architecture, troubleshooting, delivery, or governance."></textarea>
-              </section>
+      <section class="card">
+        <div class="card-title-row">
+          <h2>Certification Strength</h2>
+          <span class="weight">30%</span>
+        </div>
+        <label>Level</label>
+        <select id="certLevel">
+          <option>L100</option>
+          <option>L200</option>
+          <option>L300</option>
+        </select>
+        <label>Certificate IDs</label>
+        <input id="certIds" placeholder="for example AZ-104; AI-102; DP-203" />
+        <label>Certification Evidence</label>
+        <textarea id="certEvidence" placeholder="Explain how the certifications were used in actual delivery, architecture, governance, or troubleshooting."></textarea>
+      </section>
 
-              <section class="card">
-                <div class="card-title-row">
-                  <h2>Solution Design</h2>
-                  <span class="weight">20%</span>
-                </div>
-                <label>Level</label>
-                <select id="solutionLevel">
-                  <option>L100</option>
-                  <option>L200</option>
-                  <option>L300</option>
-                </select>
-                <label>Track</label>
-                <select id="solutionDirection">
-                  <option>Cloud</option>
-                  <option>AI</option>
-                  <option>Data</option>
-                  <option>MW</option>
-                </select>
-                <label>Evidence</label>
-                <textarea id="solutionEvidence" placeholder="Provide at least one solution case including objective, trade-offs, key design choices, and result."></textarea>
-              </section>
+      <section class="card">
+        <div class="card-title-row">
+          <h2>Solution Delivery</h2>
+          <span class="weight">20%</span>
+        </div>
+        <label>Level</label>
+        <select id="solutionLevel">
+          <option>L100</option>
+          <option>L200</option>
+          <option>L300</option>
+        </select>
+        <label>Solution Evidence</label>
+        <textarea id="solutionEvidence" placeholder="Describe one representative solution including goal, trade-offs, key design decisions, and measurable outcome."></textarea>
+      </section>
 
-              <section class="card result-card">
-                <div class="card-title-row">
-                  <h2>Calculated Result</h2>
-                  <span class="weight">System</span>
-                </div>
-                <div class="metrics">
-                  <div class="metric">
-                    <span class="metric-label">Weighted Score</span>
-                    <strong id="score">0</strong>
-                  </div>
-                  <div class="metric">
-                    <span class="metric-label">Suggested Level</span>
-                    <strong id="suggestedLevel">-</strong>
-                  </div>
-                  <div class="metric">
-                    <span class="metric-label">Suggested Track</span>
-                    <strong id="suggestedTrack">-</strong>
-                  </div>
-                </div>
-                <div class="criteria-box">
-                  <p>L100: below 180</p>
-                  <p>L200: 180 - 259</p>
-                  <p>L300: 260 and above</p>
-                </div>
-                <div class="action-row">
-                  <button id="calcBtn">Calculate</button>
-                  <button id="submitBtn">Submit Self Review</button>
-                </div>
-                <p id="msg" class="message"></p>
-              </section>
-            </section>
-          </main>
+      <section class="card result-card">
+        <div class="card-title-row">
+          <h2>Calculated Result</h2>
+          <span class="weight">System</span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+            <span class="metric-label">Weighted Score</span>
+            <strong id="score">0</strong>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Product Score</span>
+            <strong id="productScore">0</strong>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Final Level</span>
+            <strong id="suggestedLevel">-</strong>
+          </div>
+        </div>
+        <div class="criteria-box">
+          <p>L100: below 180</p>
+          <p>L200: 180 - 259</p>
+          <p>L300: 260 and above</p>
+        </div>
+        <div class="action-row">
+          <button id="calcBtn">Calculate</button>
+          <button id="submitBtn">Submit Self Review</button>
+        </div>
+        <p id="msg" class="message"></p>
+      </section>
+    </section>
+  </main>
 
-          <script src="/app.js"></script>
-        </body>
-        </html>
+  <script src="/app.js"></script>
+</body>
+</html>
